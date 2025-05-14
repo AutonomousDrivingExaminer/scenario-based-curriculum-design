@@ -1,6 +1,4 @@
-# MATS-REPAIRED
-
-
+# Scenario-Based Curriculum Generation for Multi-Agent Autonomous Driving
 
 ## Installation
 ```bash

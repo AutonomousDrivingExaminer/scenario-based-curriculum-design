@@ -1,0 +1,30 @@
+observation_model:
+  birdview:
+    _target_: adex.agent.common.BirdViewEncoder
+    _partial_: true
+
+  state:
+    _target_: torch.nn.Identity
+
+
+actor:
+  net:
+    _target_: torchrl.modules.models.MLP
+    _partial_: true
+    num_cells: [ 256,256 ]
+    activation_class:
+      _target_: hydra.utils.get_class
+      path: torch.nn.Tanh
+
+  distribution:
+    _target_: adex.agent.common.IndependentNormalDistributionHead
+
+critic:
+  net:
+    _target_: torchrl.modules.models.MLP
+    _partial_: true
+    num_cells: [ 256,256 ]
+    out_features: 1
+    activation_class:
+      _target_: hydra.utils.get_class
+      path: torch.nn.Tanh

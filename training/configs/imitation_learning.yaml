@@ -1,0 +1,40 @@
+defaults:
+  - algorithm: ppo
+  - env: route_following
+  - models: default
+
+imitation:
+  batch_size: 500
+  lr: 0.001
+  ent_coef: 0.0
+  l2_coef: 0.0
+
+experiment:
+  seed: 42
+  debug: false
+  name: ppo_pretraining
+  device: "cuda:0"
+  epochs: 4000
+  eval_interval: 1
+  eval_episodes: 16
+  checkpoint_interval: 15
+  checkpoint_dir: "./checkpoints"
+  num_checkpoints: 10
+  checkpoint: null
+
+dataset:
+  directory: "./data"
+  num_sequences: 1000
+  sequence_length: 300
+  single_file: true
+
+worker:
+  actor_device: cpu
+  num_workers: 4
+  num_eval_workers: 4
+  start_port: 2000
+  gpus: [ 0 ]
+
+logger:
+  mode: "online"
+  log_dir: "./logs"

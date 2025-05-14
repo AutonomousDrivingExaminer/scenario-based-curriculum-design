@@ -1,0 +1,39 @@
+services:
+  training:
+    image: adex/training-server:latest
+    #volumes:
+    #  - ${PWD}:/workspace
+    privileged: true
+    env_file: .env
+    environment:
+        - PYTHONPATH=${PYTHONPATH}:.
+    command: "
+        python train_plr.py
+    "
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
+  carla-server:
+    image: carlasim/carla:0.9.15
+    hostname: carla-server
+    restart: always
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    ports:
+      - "2000-2002:2000-2002"
+    environment:
+      - DISPLAY=${DISPLAY}
+    privileged: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    command: ./CarlaUE4.sh -RenderOffScreen

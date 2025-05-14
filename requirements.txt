@@ -1,0 +1,23 @@
+carla==0.9.15
+numpy
+filelock==3.0.12
+opencv-python
+gymnasium
+pygame
+scenic @ git+https://github.com/BerkeleyLearnVerify/Scenic.git@a536c13b
+srunner @ git+https://github.com/AutonomousDrivingExaminer/scenario_runner.git
+leaderboard @ git+https://github.com/AutonomousDrivingExaminer/leaderboard.git
+pettingzoo
+multiprocess
+docker
+optree
+flatten_dict
+ray
+torch
+torchvision
+torchrl
+torchsnapshot
+optuna
+imageio
+wandb
+hydra-core

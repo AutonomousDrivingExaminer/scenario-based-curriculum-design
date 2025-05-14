@@ -1,0 +1,36 @@
+name: ppo
+num_steps: 600
+batch_size: 4
+max_grad_norm: 0.5
+ppo_epochs: 8
+num_minibatches: 4
+normalize_advantages: true
+value_coef: 0.5
+clip_coef: 0.2
+gamma: 0.99
+lmbda: 0.9
+
+actor:
+  net:
+    _target_: torchrl.modules.MLP
+    _partial_: true
+    num_cells: [ 256,256 ]
+    activation_class:
+      _target_: hydra.utils.get_class
+      path: torch.nn.Tanh
+
+critic:
+  net:
+    _target_: torchrl.modules.MLP
+    _partial_: true
+    num_cells: [ 256,256 ]
+    out_features: 1
+    activation_class:
+      _target_: hydra.utils.get_class
+      path: torch.nn.Tanh
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 3e-4
+  eps: 1e-5

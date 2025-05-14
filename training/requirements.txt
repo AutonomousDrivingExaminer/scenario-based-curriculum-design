@@ -1,0 +1,18 @@
+torch
+torchvision
+pettingzoo
+tensorboard
+stable_baselines3==2.0.0
+optree
+wandb
+einops
+imageio[ffmpeg]==2.31.3
+torchrl==0.1.1
+torchsnapshot
+ray==2.7.0
+docker==6.1.3
+verifai
+optuna
+hydra-core
+flatten_dict
+# antlr4-python3-runtime==4.9.*

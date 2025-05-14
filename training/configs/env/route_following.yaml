@@ -1,0 +1,51 @@
+scenario: "./scenarios/four_way_intersection.scenic"
+agent_name: "student"
+resample: True
+num_scenes_per_scenario: 10
+frame_stack: 4
+frame_skip: 2
+grayscale: True
+birdview_dim: 96
+use_rgb: True
+pixels_per_meter: 4
+time_limit: 15.05
+terminate_on_route_deviation: True
+
+birdview:
+  _target_: adex_gym.wrappers.BirdViewObservationWrapper
+  _partial_: true
+  use_rgb: true
+  config:
+    _target_: adex_gym.wrappers.birdview.ObservationConfig
+    width: 96
+    height: 96
+    pixels_per_meter: 4
+    crop_type:
+      _target_: adex_gym.wrappers.birdview.BirdViewCropType.FRONT_AREA_ONLY
+    masks:
+      - _target_: adex_gym.wrappers.birdview.BirdViewMaskType.EGO
+      - _target_: adex_gym.wrappers.birdview.BirdViewMaskType.ROAD
+      - _target_: adex_gym.wrappers.birdview.BirdViewMaskType.ROUTE
+      - _target_: adex_gym.wrappers.birdview.BirdViewMaskType.CENTERLINES
+
+
+tasks:
+  - student:
+      task:
+        _target_: adex_gym.tasks.TaskCombination
+        tasks:
+          - _target_: adex_gym.tasks.InfractionAvoidanceTask
+            agent: student
+            infractions:
+              - COLLISION_PEDESTRIAN
+              - COLLISION_VEHICLE
+              - COLLISION_STATIC
+              - ON_SIDEWALK_INFRACTION
+            penalties: 0
+            terminate_on_infraction: true
+          - _traget_: adex_gym.tasks.DriveMinVelocityTask
+            agent: student
+            min_velocity: 5.0
+          - _target_: adex_gym.tasks.RouteFollowingTask
+            agent: student
+            extra_reward_on_completion: 100.0

@@ -1,0 +1,46 @@
+defaults:
+  - algorithm@agent: ppo
+  - models: default
+
+agent:
+  name: vehicle
+  checkpoint: null
+  observation_model: ${models.observation_model}
+
+render:
+  agent: vehicle_0
+  width: 854
+  height: 480
+
+experiment:
+  seed: 42
+  debug: false
+  name: independent_ppo_negotiation
+  device: "cuda:0"
+  epochs: 4000
+  scenario: "./scenarios/four_way_intersection.scenic"
+  scenario_params:
+    - NUM_AGENTS: 4
+  eval_interval: 15
+  eval_episodes: 2
+  checkpoint_interval: 15
+  checkpoint_dir: "./checkpoints"
+  num_checkpoints: 10
+  checkpoint_restore: null #best_model.pt
+
+workers:
+  train:
+    num_workers: 1 #4
+    reset_between_rollouts: true
+    actor_device: cpu
+    start_port: 2000
+    available_gpus: [ 0 ]
+  eval:
+    num_workers: 1
+    actor_device: cpu
+    start_port: 2000
+    available_gpus: [ 0 ]
+
+logger:
+  mode: "offline"
+  log_dir: "./logs"

@@ -1,0 +1,48 @@
+defaults:
+  - algorithm@student: ppo
+  - models: default
+
+student:
+  discrete: false
+  name: student
+  checkpoint: null
+  observation_model: ${models.observation_model}
+
+experiment:
+  seed: 42
+  debug: false
+  name: ppo_route_following
+  carla_version: 0.9.15
+  device: cpu
+  epochs: 5000
+  checkpoint_interval: 15
+  checkpoint_dir: "./checkpoints"
+  num_checkpoints: 10
+  checkpoint_restore: null #best_model.pt
+
+env_buffer:
+  max_size: 100000
+  p: 0.5
+  temperature: 1.0
+  replay_rate: 0.7
+  update_sampler: true
+
+env_generator:
+  sampler: optuna
+  scenario: "./scenarios/route_following.scenic"
+  max_vehicles: 4
+
+eval:
+  interval: 5
+  video_dir: ???
+
+workers:
+  num_workers: 2
+  actor_device: cpu
+  start_port: 2100
+  wait_time: 60.0
+  available_gpus: [ 0, 1 ]
+
+logger:
+  mode: "offline"
+  log_dir: "./logs"
